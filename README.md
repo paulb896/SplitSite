@@ -1,6 +1,6 @@
 # Split Site
 
-React Native Application Allows two sites to be browsed side by side
+React Native Application that Allows two sites to be Browsed at the Same Time!
 
 ## Run Using ios emulator
 
