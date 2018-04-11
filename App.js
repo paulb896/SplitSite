@@ -38,25 +38,36 @@ let htmlContent = `
     <button type="button">HELLO</button>
     <img src="https://media.contentapi.ea.com/content/dam/ea/walrus/maps/kamino-vista-xlg-2x.jpg"/>
 `;
-const website = 'http://www.gif-shop.com'
+const website = 'https://www.giantbomb.com';
 const movieTestUrl = 'https://raw.githubusercontent.com/itemsapi/itemsapi-example-data/master/items/movies-for-test.json';
+const baseUrl = 'http://www.ea.com'; // TODO: CHANGE TO TEMPLATE SERVER
+throw error("CHANGE BASE URL")
+
 
 type Props = {};
 export default class App extends Component<Props> {
   constructor(props){
     super(props);
-    this.state ={ isLoading: true, site: 'https://www.ea.com', site2: 'http://www.reddit.com' }
+    this.state = {
+      isLoading: true,
+      site: 'http://www.ea.com',
+      navUrl: `${baseUrl}nav`,
+      gameListUrl: `${baseUrl}game-list`,
+      gameDetailsUrl: `${baseUrl}game-details`,
+      friendListUrl: `${baseUrl}friend-list`,
+      chatUrl: `${baseUrl}chat`
+    }
   }
   componentDidMount(){
     return fetch(movieTestUrl)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-        }, function(){
-
-        });
+      // .then((response) => response.json())
+      .then((htmlData) => {
+        // this.setState({
+        //   isLoading: false,
+        //   dataSource: responseJson,
+        // }, function(){
+        //
+        // });
       })
       .catch((error) =>{
         console.error(error);
@@ -65,30 +76,36 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={styles.web}>
-            <Text style={styles.siteTitle}>Site 1</Text>
-            <TextInput
-              style={styles.siteInput}
-              onChangeText={(site) => this.setState({site})}
-              value={this.state.site}
-            />
-            <WebView
-              source={{uri: this.state.site}}
-            />
-          </View>
-          <View style={styles.web}>
-            <Text style={styles.siteTitle}>Site 2</Text>
-            <TextInput
-              style={styles.siteInput}
-              onChangeText={(site2) => this.setState({site2})}
-              value={this.state.site2}
-            />
-            <WebView
-              source={{uri: this.state.site2}}
-            />
-          </View>
+        <View style={styles.nav}>
+          <WebView
+            bounces={false}
+            scrollEnabled={false}
+            style={{height: 120, width: Dimensions.get('window').width, marginTop: 20}}
+            source={{uri: this.state.navUrl}}
+          />
         </View>
+        <WebView
+          bounces={false}
+          style={{height: 550, width: Dimensions.get('window').width}}
+          source={{uri: this.state.gameListUrl}}
+        />
+        <WebView
+          bounces={false}
+          scrollEnabled={false}
+          style={{height: 150, width: Dimensions.get('window').width}}
+          source={{uri: this.state.gameDetailsUrl}}
+        />
+        <WebView
+          bounces={false}
+          style={{ width: Dimensions.get('window').width}}
+          source={{uri: this.state.friendListUrl}}
+        />
+        <WebView
+          bounces={false}
+          scrollEnabled={false}
+          style={{width: Dimensions.get('window').width}}
+          source={{uri: this.state.chatUrl}}
+        />
       </View>
     );
   }
@@ -96,7 +113,16 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
   web: {
-    width: Dimensions.get('window').width/2
+    width: Dimensions.get('window').width
+  },
+  nav: {
+    width: Dimensions.get('window').width,
+    height: 50,
+    marginTop: 20
+  },
+  gameList: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height - 30
   },
   siteTitle: {
     height: 15,
